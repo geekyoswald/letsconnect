@@ -1,0 +1,21 @@
+import React from "react";
+import CircularCount from "./CircularCount";
+import CircularImage from "./CircularImage";
+import SecondaryHeading from "./SecondaryHeading";
+import SmallText from "./SmallText";
+
+interface FriendBoxType {
+  url: string;
+  name: string;
+}
+
+const FriendBox = ({ url, name }: FriendBoxType) => {
+  return (
+    <div className=" h-16 w-11/12 flex justify-start gap-2 items-center">
+      <CircularImage url={url} dim="35px" />
+      <SmallText data={name} />
+    </div>
+  );
+};
+
+export default FriendBox;

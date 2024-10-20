@@ -1,8 +1,13 @@
+import FeatureBox from "@/app/utilcomponents/FeatureBox";
 import React from "react";
+import { Trash, Calendar } from "react-feather";
 
 const AppUtilities = () => {
   return (
-    <div className="border-2 m-2 flex items-center justify-center h-52 w-11/12"></div>
+    <div className=" m-2 flex flex-col h-52 w-11/12">
+      <FeatureBox icon={Trash} text="Bin" />
+      <FeatureBox icon={Calendar} text="Calendar" />
+    </div>
   );
 };
 
