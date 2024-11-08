@@ -18,16 +18,16 @@ datasource db {
 model User {
   id    Int    @id @default(autoincrement())
   username String @unique
-  messages Message[]
+  sentMessage Message[] @relation("sentMessage")
+  receivedMessage Message[] @relation("receivedMessage")
 }    
 
 model Message {
   id         Int      @id @default(autoincrement())
   text     String
-  isSender    Int
-  userId    Int
-  user     User     @relation(fields: [userId], references: [id])
+  senderId Int
+  receiverId Int
+  sender  User @relation("sentMessage", fields: [senderId], references: [id])
+  receiver User @relation("receivedMessage", fields: [receiverId], references: [id])
   createdAt   DateTime @default(now())
 }
-  
-
