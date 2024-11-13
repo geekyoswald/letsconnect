@@ -6,6 +6,7 @@ import Messages from "./DummyMessages";
 import { useSelector } from "react-redux";
 import { rootState } from "@/app/redux/rootState";
 import axios from "axios";
+import { createClient } from "@supabase/supabase-js";
 
 const MessagesComp = () => {
   interface Message {
@@ -15,6 +16,9 @@ const MessagesComp = () => {
     text: string;
     createdAt: string;
   }
+  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const state = useSelector((state: rootState) => state);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
@@ -32,6 +36,18 @@ const MessagesComp = () => {
       console.log(response.data, "All Messages");
     };
     fetchAllMessages();
+    const handleInserts = (payload) => {
+      const newMessage = payload.new;
+      setAllMessages((prevMessage) => [...prevMessage, newMessage]);
+    };
+    supabase
+      .channel("MessageTable")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "Message" },
+        handleInserts
+      )
+      .subscribe();
   }, [state.friend]);
   return (
     <div
