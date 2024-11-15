@@ -27,7 +27,7 @@ const Chats = () => {
   useEffect(() => {
     const getFriends = async () => {
       const allFriends = await axios.get(
-        "http://localhost:3000/api/users/all",
+        "http://13.232.169.110:3000/api/users/all",
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("token")}`,
