@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const userInitialState = {
-  userId: 0,
+  userId: 1,
   username: "dummy",
 };
 

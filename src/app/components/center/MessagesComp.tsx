@@ -51,7 +51,7 @@ const MessagesComp = () => {
   }, [state.friend]);
   return (
     <div
-      style={{ maxHeight: "640px" }}
+      style={{ height: "640px", maxHeight: "640px" }}
       className=" w-11/12 border-2 gap-4 items-center rounded-2xl p-2 flex flex-col overflow-y-auto bg-green-400"
     >
       {allMessages.map((message) => {
