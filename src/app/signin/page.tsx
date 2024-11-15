@@ -11,12 +11,19 @@ const Page = () => {
 
   const router = useRouter();
   const handleOnCLick = async () => {
-    const resp = await axios.post("http://localhost:3000/signin", {
-      username,
-      password,
-    });
-    console.log(resp.data); // Here you can add the logic to handle the response from the server.
-    router.push("/chat");
+    try {
+      const resp = await axios.post("http://localhost:3000/api/signin", {
+        username,
+        password,
+      });
+      console.log(resp.data);
+      localStorage.setItem("token", resp.data.token);
+      localStorage.setItem("username", resp.data.user.username);
+      localStorage.setItem("id", resp.data.user.id);
+      router.push("/chat");
+    } catch (e) {
+      console.error(e);
+    }
   };
   return (
     <div className="h-screen w-screen bg-slate-100  flex items-center justify-center">
@@ -39,12 +46,17 @@ const Page = () => {
         <div className="flex gap-4">
           <button
             className="text-2xl w-48 text-white bg-green-500 border rounded "
-            onClick={() => handleOnCLick}
+            onClick={() => handleOnCLick()}
           >
             Submit
           </button>
 
-          <button className="text-2xl w-48 text-white bg-black border rounded ">
+          <button
+            className="text-2xl w-48 text-white bg-black border rounded "
+            onClick={() => {
+              router.push("/signup");
+            }}
+          >
             Sign Up
           </button>
         </div>

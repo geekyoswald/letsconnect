@@ -11,11 +11,19 @@ const CenterBottom = () => {
   const state = useSelector((state: rootState) => state);
   const [message, setMessage] = useState("");
   const handleSubmit = async () => {
-    const response = await axios.post("http://localhost:3000/api/messages", {
-      senderId: state.user.userId,
-      receiverId: state.friend.friendId,
-      text: message,
-    });
+    const response = await axios.post(
+      "http://localhost:3000/api/messages",
+      {
+        senderId: state.user.userId, //remove this & extract in server side
+        receiverId: state.friend.friendId,
+        text: message,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
     setMessage("");
     console.log(response.data, "Message sent successfully"); // Here you can add the logic to display the message in the chat box.
   };

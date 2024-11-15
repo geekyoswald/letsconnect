@@ -10,7 +10,7 @@ const Page = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const handleOnCLick = async () => {
-    const resp = await axios.post("http://localhost:3000/signup", {
+    const resp = await axios.post("http://localhost:3000/api/signup", {
       username,
       password,
     });
@@ -43,7 +43,12 @@ const Page = () => {
             Submit
           </button>
 
-          <button className="text-2xl w-48 text-white bg-black border rounded ">
+          <button
+            className="text-2xl w-48 text-white bg-black border rounded "
+            onClick={() => {
+              router.push("/signin");
+            }}
+          >
             Sign In
           </button>
         </div>

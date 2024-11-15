@@ -29,6 +29,7 @@ const MessagesComp = () => {
         {
           headers: {
             userId: state.user.userId,
+            authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
