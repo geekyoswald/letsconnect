@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import SingleMessage from "./SingleMessage";
-import Messages from "./DummyMessages";
-import { useSelector } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import { rootState } from "@/app/redux/rootState";
 import axios from "axios";
 import { createClient } from "@supabase/supabase-js";
+import { updateUser } from "@/app/redux/slices/userSlices";
 
 const MessagesComp = () => {
   interface Message {
@@ -19,13 +20,19 @@ const MessagesComp = () => {
   const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+  const dispatch = useDispatch();
   const state = useSelector((state: rootState) => state);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   useEffect(() => {
+    dispatch(
+      updateUser({
+        id: Number(localStorage.getItem("id")),
+        name: localStorage.getItem("username"),
+      })
+    );
     const fetchAllMessages = async () => {
       const response = await axios.get(
-        `http://13.232.169.110:3000/api/messages?friendId=${state.friend.friendId}`,
+        `http://localhost:3000/api/messages?friendId=${state.friend.friendId}`,
         {
           headers: {
             userId: state.user.userId,
@@ -37,7 +44,7 @@ const MessagesComp = () => {
       console.log(response.data, "All Messages");
     };
     fetchAllMessages();
-    const handleInserts = (payload) => {
+    const handleInserts = (payload: { new: Message }) => {
       const newMessage = payload.new;
       setAllMessages((prevMessage) => [...prevMessage, newMessage]);
     };

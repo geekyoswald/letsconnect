@@ -1,8 +1,12 @@
+"use client";
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const userInitialState = {
-  userId: Number(localStorage.getItem("id")),
-  username: localStorage.getItem("username"),
+  // userId: Number(localStorage.getItem("id")),
+  // username: localStorage.getItem("username"),
+  userId: 0,
+  username: "dummy",
 };
 
 const userSlice = createSlice({

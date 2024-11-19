@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import PrimaryHeading from "../utilcomponents/PrimaryHeading";
+
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -10,7 +10,7 @@ const Page = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const handleOnCLick = async () => {
-    const resp = await axios.post("http://13.232.169.110:3000/api/signup", {
+    const resp = await axios.post("http://localhost:3000/api/signup", {
       username,
       password,
     });
