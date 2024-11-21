@@ -12,9 +12,13 @@ RUN npx prisma generate
 
 RUN npm run build 
 
+COPY entryscript.sh /app/entryscript.sh
+
+RUN chmod +x /app/entryscript.sh
+
 EXPOSE 3000
 
-CMD ["npm","start"]
+CMD ["entryscript.sh"] 
 
 
 
