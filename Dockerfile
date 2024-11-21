@@ -18,7 +18,7 @@ RUN chmod +x /app/entryscript.sh
 
 EXPOSE 3000
 
-CMD ["entryscript.sh"] 
+CMD ["./entryscript.sh"] 
 
 
 
