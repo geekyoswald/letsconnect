@@ -1,77 +1,63 @@
 name: CI/CD Workflow
 
-
 on:
- push:
-   branches:
-     - t3
-
+  push:
+    branches:
+      - t3
 
 jobs:
- build-and-deploy:
-   runs-on: ubuntu-latest
-   steps:
-     # Checkout the code
-     - name: Checkout code
-       uses: actions/checkout@v2
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
 
+      # Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-     # Set up Docker Buildx
-     - name: Set up Docker Buildx
-       uses: docker/setup-buildx-action@v2
+      # Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t geekyoswald/letsconnect:latest .
 
+      # Push Docker image to Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push geekyoswald/letsconnect:latest
 
-     # Log in to Docker Hub
-     - name: Log in to Docker Hub
-       uses: docker/login-action@v2
-       with:
-         username: ${{ secrets.DOCKER_USERNAME }}
-         password: ${{ secrets.DOCKER_PASSWORD }}
+      # Set up SSH agent with private key
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # Connect to EC2 instance and pull & run the Docker image
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-235-63-191.ap-south-1.compute.amazonaws.com << 'EOF'
+            # Stop and remove the running container if it exists
+            sudo docker stop letsconnect_container || true
+            sudo docker rm letsconnect_container || true
+            
+            # Remove all old Docker images except the one being used
+            sudo docker image prune -a -f || true
 
-     # Build Docker image
-     - name: Build Docker image
-       run: |
-         docker build -t geekyoswald/letsconnect:latest .
+            # Pull the latest Docker image
+            sudo docker pull geekyoswald/letsconnect:latest
 
-
-     # Push Docker image to Docker Hub
-     - name: Push Docker image
-       run: |
-         docker push geekyoswald/letsconnect:latest
-
-
-     # Set up SSH agent with private key
-     - name: Set up SSH
-       uses: webfactory/ssh-agent@v0.5.3
-       with:
-         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-
-     # Connect to EC2 instance and pull & run the Docker image
-     - name: Deploy to EC2
-  run: |
-    ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-235-63-191.ap-south-1.compute.amazonaws.com << 'EOF'
-      # Stop and remove the running container if it exists
-      sudo docker stop letsconnect_container || true
-      sudo docker rm letsconnect_container || true
-      
-      # Remove all old Docker images except the one being used
-      sudo docker image prune -a -f || true
-
-
-      # Pull the latest Docker image
-      sudo docker pull geekyoswald/letsconnect:latest
-
-
-      # Run the Docker container with environment variables
-      sudo docker run -d -p 3000:3000 \
-        --name letsconnect_container \
-        --restart unless-stopped \
-        -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
-        -e DIRECT_URL=${{ secrets.DIRECT_URL }} \
-        -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} \
-        -e NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-        -e NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
-        geekyoswald/letsconnect:latest
-    EOF
+            # Run the Docker container with environment variables
+            sudo docker run -d -p 3000:3000 \
+              --name letsconnect_container \
+              --restart unless-stopped \
+              -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+              -e DIRECT_URL=${{ secrets.DIRECT_URL }} \
+              -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} \
+              -e NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+              -e NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
+              geekyoswald/letsconnect:latest
+          EOF
