@@ -30,6 +30,15 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+    const bearerToken = req.headers.get("authorization");
+  const token = bearerToken?.split(" ")[1];
+  if (!token) {
+    return NextResponse.json({ error: "Unauthorized due to missing token" });
+  }
+  const isTokenValid = jwt.verify(token, JWT_SECRET);
+  if (!isTokenValid) {
+    return NextResponse.json({ error: "Unauthorized due to invalid token" });
+  }
   const userId = Number(req.headers.get("userId"));
   const { searchParams } = new URL(req.url);
   const friendId = Number(searchParams.get("friendId"));

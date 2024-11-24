@@ -9,7 +9,7 @@ const CircularImage = ({ url, dim }: CircularImageType) => {
   return (
     <div
       style={{ width: dim, height: dim }}
-      className="rounded-full overflow-hidden"
+      className="rounded-full overflow-hidden "
     >
       <img src={url} className="w-full h-full" alt="" />
     </div>
