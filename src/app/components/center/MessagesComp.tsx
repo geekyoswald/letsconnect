@@ -33,7 +33,7 @@ const MessagesComp = () => {
     );
     const fetchAllMessages = async () => {
       const response = await axios.get(
-        `http://localhost:3000/api/messages?friendId=${state.friend.friendId}`,
+        `/api/messages?friendId=${state.friend.friendId}`,
         {
           headers: {
             userId: state.user.userId,
