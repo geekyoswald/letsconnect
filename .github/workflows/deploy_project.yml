@@ -37,19 +37,24 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Connect to EC2 instance and pull & run the Docker image
+      # Connect to EC2 instance, clean up space, and deploy
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-235-63-191.ap-south-1.compute.amazonaws.com << 'EOF'
-            # Stop and remove the running container if it exists
-            sudo docker stop letsconnect_container || true
-            sudo docker rm letsconnect_container || true
-            
-            # Remove all old Docker images except the one being used
+            # Remove stopped containers, unused volumes, and dangling images to free up space
+            sudo docker container prune -f || true
+            sudo docker volume prune -f || true
             sudo docker image prune -a -f || true
+
+            # Verify free disk space
+            df -h /var/lib/docker
 
             # Pull the latest Docker image
             sudo docker pull geekyoswald/letsconnect:latest
+
+            # Stop and remove the old container if it exists
+            sudo docker stop letsconnect_container || true
+            sudo docker rm letsconnect_container || true
 
             # Run the Docker container with environment variables
             sudo docker run -d -p 3000:3000 \
