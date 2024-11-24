@@ -27,7 +27,8 @@ jobs:
       # Build Docker image for ARM64
       - name: Build Docker image for ARM64
         run: |
-          docker buildx create --use
+          docker buildx create --name mybuilder --use
+          docker buildx inspect --bootstrap
           docker buildx build --platform linux/arm64 -t geekyoswald/letsconnect:latest --push .
 
       # Set up SSH agent with private key
