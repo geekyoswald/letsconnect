@@ -14,7 +14,9 @@ ALTER TABLE "Message" DROP CONSTRAINT "Message_userId_fkey";
 ALTER TABLE "Message" DROP COLUMN "isSender",
 DROP COLUMN "userId",
 ADD COLUMN     "receiverId" INTEGER NOT NULL,
-ADD COLUMN     "senderId" INTEGER NOT NULL;
+ADD COLUMN     "senderId" INTEGER NOT NULL,
+ADD COLUMN     "imageUrl" TEXT,
+ADD COLUMN     "emoji" TEXT;
 
 -- AddForeignKey
 ALTER TABLE "Message" ADD CONSTRAINT "Message_senderId_fkey" FOREIGN KEY ("senderId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

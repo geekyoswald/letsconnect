@@ -8,7 +8,9 @@ import jwt from "jsonwebtoken";
 interface Message {
   senderId: number;
   receiverId: number;
-  text: string;
+  text?: string;
+  imageUrl?: string;
+  emoji?: string;
 }
 
 export async function POST(req: NextRequest) {
@@ -22,9 +24,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized due to invalid token" });
   }
 
-  const { senderId, receiverId, text }: Message = await req.json();
+  const { senderId, receiverId, text, imageUrl, emoji }: Message = await req.json();
   const newMessage = await prisma.message.create({
-    data: { senderId, receiverId, text },
+    data: { senderId, receiverId, text, imageUrl, emoji },
   });
   return NextResponse.json(newMessage);
 }
