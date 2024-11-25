@@ -27,6 +27,12 @@ const CenterBottom = () => {
     setMessage("");
     console.log(response.data, "Message sent successfully"); // Here you can add the logic to display the message in the chat box.
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
   return (
     <div className="border-2 w-11/12 h-12 rounded-2xl p-2 flex justify-between bg-amber-200">
       <input
@@ -35,6 +41,7 @@ const CenterBottom = () => {
         placeholder="Please Enter Your Text .."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
       <div className="w-8 h-8 flex justify-center rounded-full items-center bg-amber-500">
