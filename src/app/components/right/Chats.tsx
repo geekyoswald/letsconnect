@@ -37,7 +37,7 @@ const Chats = () => {
   }, []);
 
   return (
-    <div className=" m-2 h-3/6 w-11/12 ">
+    <div className=" m-2 h-3/6 w-11/12 overflow-y-auto">
       <PrimaryHeading data="Chats" />
       {allFriends.map((friend) => {
         return (
