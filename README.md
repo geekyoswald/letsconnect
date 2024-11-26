@@ -1,5 +1,7 @@
 -- Contribution Instructions -- 
 
+Only attempt for a contribution after getting the issue assigned to you. 
+
 Kindly fulfill all the desired conditions mentioned in an issue to be eligible for the bounty. Don't worry if your submission is not selected for bounty, your code will not be used in the production code. 
 
 If your contribution does not adhere to the things mentioned in the issue, then it will be deleted because these issues are for everyone's practise and to provide a level playing field for everyone, we do not want any hints for anybody. 
