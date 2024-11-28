@@ -1,17 +1,27 @@
--- Contribution Instructions -- 
+-- Contribution Instructions --
 
-Only attempt for a contribution after getting the issue assigned to you. 
+Issue Assignment:
+Only attempt a contribution after the issue has been officially assigned to you.
 
-Kindly fulfill all the desired conditions mentioned in an issue to be eligible for the bounty. Don't worry if your submission is not selected for bounty, your code will not be used in the production code. 
+Eligibility for Issue Assignment:
+Requests for issue assignment will only be considered one week after the video on the same project goes live. The first person to request the issue after the one-week period will be assigned the issue.
 
-If your contribution does not adhere to the things mentioned in the issue, then it will be deleted because these issues are for everyone's practise and to provide a level playing field for everyone, we do not want any hints for anybody. 
+Meeting Requirements for Bounty:
+Ensure that you fulfill all the conditions outlined in the issue to be eligible for the bounty.
+If your submission is not selected for the bounty, rest assured that your code will not be used in the production code.
+Contributions that fail to adhere to the specified requirements will be deleted to maintain fairness and ensure a level playing field for everyone.
 
-After an issue is successfully resolved, then new contributions can be merged but without a bounty. The bounty awarded is just for a single first satisfactory contribution only. 
+Practice Opportunities:
+These issues are designed for everyone’s practice, so avoid giving or seeking hints before the first successful submission.
 
-The comment thread can be used for discussions and hints post the first successful submission of the solution to an issue but not before that. 
+Post-Resolution Discussions:
+Once the issue is successfully resolved and closed, new contributions can still be merged, but without a bounty.
+The bounty is awarded to the first satisfactory submission only.
+After the first resolution, the comment thread may be used for discussions and hints.
 
-Only one bounty is allowed for a single person. 
+Bounty Limitations:
+Each person is eligible for only one bounty across all issues.
 
-Kindly expect some delay in bounty credit, and message me on Linkedin if it has been more than 3 days. 
-
-
+Bounty Credit:
+Please note there may be some delay in processing the bounty.
+If it has been more than 3 days, feel free to message me on LinkedIn for follow-up.
