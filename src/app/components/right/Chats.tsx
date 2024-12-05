@@ -8,6 +8,7 @@ import friend6 from "../../assets/pp2.png";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { updateFriend } from "@/app/redux/slices/friendSlice";
+import { supabase } from "@/app/utilcomponents/supabaseClient";
 
 const Chats = () => {
   interface Friend {
@@ -23,6 +24,20 @@ const Chats = () => {
     dispatch(updateFriend({ friendId, friendName }));
   };
 
+  const getProfilePicture = async (friendId: number) => {
+    const { data, error } = await supabase
+      .from("profiles") // Assuming you have a 'profiles' table
+      .select("profile_picture") // Assuming 'profile_picture' is the column name
+      .eq("id", friendId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching profile picture:", error);
+      return null;
+    }
+    return data.profile_picture;
+  };
+
   useEffect(() => {
     const getFriends = async () => {
       const allFriends = await axios.get("/api/users/all", {
@@ -30,8 +45,14 @@ const Chats = () => {
           authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setAllFriends(allFriends.data);
-      console.log(allFriends.data);
+      const friendsWithPictures = await Promise.all(
+        allFriends.data.map(async (friend: Friend) => {
+          const profilePicture = await getProfilePicture(friend.id);
+          return { ...friend, profilePicture };
+        })
+      );
+      setAllFriends(friendsWithPictures);
+      console.log(friendsWithPictures);
     };
     getFriends();
   }, []);
@@ -43,7 +64,7 @@ const Chats = () => {
         return (
           <FriendBox
             key={friend.id}
-            url={friend6.src}
+            url={friend.profilePicture || friend6.src} // Use the profile picture if available
             name={friend.username}
             onClick={() => handleFriendSelect(friend.id, friend.username)}
           />
