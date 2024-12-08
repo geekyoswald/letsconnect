@@ -49,7 +49,7 @@ const MessagesComp = () => {
       const newMessage = payload.new;
       setAllMessages((prevMessage) => [...prevMessage, newMessage]);
     };
-    supabase
+    const subscription = supabase
       .channel("MessageTable")
       .on(
         "postgres_changes",
@@ -57,6 +57,9 @@ const MessagesComp = () => {
         handleInserts
       )
       .subscribe();
+    return () => {
+      supabase.removeChannel(subscription);
+    };
   }, [state.friend]);
   return (
     <div
