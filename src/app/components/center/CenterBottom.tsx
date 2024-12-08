@@ -19,6 +19,7 @@ const CenterBottom = () => {
   const handleEmojiClick = (event: any, emojiObject: any) => {
     setSelectedEmoji(emojiObject);
     setMessage((prevMessage) => prevMessage + emojiObject.emoji);
+    setShowEmojiPicker(false);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
