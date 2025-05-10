@@ -7,7 +7,7 @@ interface SmallTextType {
 const SmallText = ({ data }: SmallTextType) => {
   return (
     <div>
-      <p className="font-mono text-sm font-black text-white">{data}</p>
+      <p className="font-mono text-sm font-black ">{data}</p>
     </div>
   );
 };

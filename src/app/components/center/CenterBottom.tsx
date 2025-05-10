@@ -34,10 +34,10 @@ const CenterBottom = () => {
     }
   };
   return (
-    <div className="border-2 w-11/12 h-12 rounded-2xl p-2 flex justify-between bg-amber-200">
+    <div className="fixed bottom-0   border-2 w-4/6 h-12 rounded-2xl p-2 flex justify-between bg-amber-400 mx-auto mb-4">
       <input
         type="text"
-        className=" bg-transparent outline-none w-10/12"
+        className="bg-transparent outline-none w-10/12"
         placeholder="Please Enter Your Text .."
         value={message}
         onChange={(e) => setMessage(e.target.value)}

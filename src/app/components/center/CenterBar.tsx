@@ -5,10 +5,10 @@ import CenterBottom from "./CenterBottom";
 
 const CenterBar = () => {
   return (
-    <div className="col-span-3 h-full border-2 border-black gap-2 rounded-2xl bg-white flex flex-col items-center">
-      <FriendChatBox />
+    <div className="col-span-4 h-screen border-2 border-black gap-2 rounded-2xl bg-white flex flex-col items-center">
+      {/* <FriendChatBox /> */}
       <MessagesComp />
-      <CenterBottom />
+      {/* <CenterBottom /> */}
     </div>
   );
 };

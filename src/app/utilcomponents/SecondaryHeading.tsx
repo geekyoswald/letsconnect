@@ -7,7 +7,7 @@ interface SecondaryHeadingType {
 const SecondaryHeading = ({ data }: SecondaryHeadingType) => {
   return (
     <div>
-      <p className="font-mono text-xl font-black text-white">{data}</p>
+      <p className="font-mono text-xl font-black ">Saksham Gupta</p>
     </div>
   );
 };

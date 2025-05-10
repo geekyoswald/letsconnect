@@ -5,10 +5,13 @@ import { MessageCircle, Globe, Settings, Lock } from "react-feather";
 const AppFeatures = () => {
   return (
     <div className=" m-2 flex flex-col  h-80 w-11/12">
-      <FeatureBox icon={MessageCircle} text="Messages" count="2" />
-      <FeatureBox icon={Globe} text="Language" />
-      <FeatureBox icon={Settings} text="Settings" count="2" />
-      <FeatureBox icon={Lock} text="Privacy" count="2" />
+      <FeatureBox icon={MessageCircle} text="How Aliens Came ?" count="2" />
+      <FeatureBox icon={MessageCircle} text="Python Setup" count="2" />
+      <FeatureBox icon={MessageCircle} text="Astrology Maths" />
+      <FeatureBox icon={MessageCircle} text="Youtube is going " />
+      <FeatureBox icon={MessageCircle} text="Chat GPT vs Deep Seek" count="2" />
+      <FeatureBox icon={MessageCircle} text="Amazon is taking .." count="2" />
+      <FeatureBox icon={MessageCircle} text="African savannah are .." />
     </div>
   );
 };

@@ -12,7 +12,7 @@ const FeatureBox = ({ icon: Icon, text, count }: FeatureBoxType) => {
   return (
     <div className=" w-11/12 h-8 m-2 flex justify-between items-center">
       <div className="flex gap-2 items-center">
-        <Icon className="text-white" />
+        <Icon className="text-black" />
         <SmallText data={text} />
       </div>
       <div className="text-white">
