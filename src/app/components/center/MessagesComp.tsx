@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import SingleMessage from "./SingleMessage";
+import { createBrowserClient } from "@supabase/ssr";
 
 import { useDispatch, useSelector } from "react-redux";
 import { rootState } from "@/app/redux/rootState";
 import axios from "axios";
-import { createClient } from "@supabase/supabase-js";
+// import { createClient } from "@supabase/supabase-js";
 import { updateUser } from "@/app/redux/slices/userSlices";
 
 const MessagesComp = () => {
@@ -17,14 +18,22 @@ const MessagesComp = () => {
     text: string;
     createdAt: string;
   }
-  const SUPABASE_URL = "NEXT_PUBLIC_SUPABASE_URL";
-  const SUPABASE_ANON_KEY = "NEXT_PUBLIC_SUPABASE_ANON_KEY";
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
+
+ const supabase = createBrowserClient(
+    supabaseUrl!,
+    supabaseKey!,
+  );
+  // const SUPABASE_URL = "NEXT_PUBLIC_SUPABASE_URL";
+  // const SUPABASE_ANON_KEY = "NEXT_PUBLIC_SUPABASE_ANON_KEY";
 
   const dispatch = useDispatch();
   const state = useSelector((state: rootState) => state);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   useEffect(() => {
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     dispatch(
       updateUser({
         id: Number(localStorage.getItem("id")),

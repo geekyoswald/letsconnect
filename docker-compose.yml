@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  web:
+    image: geekyoswald/letsconnect   # change tag if needed
+    container_name: letsconnect-app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
