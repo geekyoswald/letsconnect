@@ -3,7 +3,7 @@ version: "3.9"
 services:
   web:
     image: geekyoswald/letsconnect   # change tag if needed
-    container_name: letsconnect-app
+    container_name: letsconnect_container
     ports:
       - "3000:3000"
     env_file:
