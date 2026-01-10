@@ -8,57 +8,51 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # Checkout the code
+      # 1️⃣ Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Set up Docker Buildx
+      # 2️⃣ Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Log in to Docker Hub
+      # 3️⃣ Login to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build Docker image for ARM64
+      # 4️⃣ Build & push ARM64 image
       - name: Build Docker image for ARM64
         run: |
-          docker buildx create --name mybuilder --use
+          docker buildx create --use --name mybuilder
           docker buildx inspect --bootstrap
-          docker buildx build --platform linux/arm64 -t geekyoswald/letsconnect:latest --push .
+          docker buildx build \
+            --platform linux/arm64 \
+            -t geekyoswald/letsconnect:latest \
+            --push .
 
-      # Set up SSH agent with private key
+      # 5️⃣ Setup SSH
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Connect to EC2 instance, clean up space, and deploy
+      # 6️⃣ Deploy on EC2 (Docker Compose)
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-50-239-137.eu-north-1.compute.amazonaws.com << 'EOF'
-            # Remove stopped containers, unused volumes, and dangling images to free up space
-          
+            set -e
+
             cd /home/ubuntu/letsconnect
-            
-            sudo docker container prune -f || true
-            sudo docker volume prune -f || true
-            sudo docker image prune -a -f || true
 
-            # Verify free disk space
-            df -h /var/lib/docker
+            # Pull latest image
+            sudo docker compose pull
 
-            # Pull the latest Docker image
-            sudo docker pull geekyoswald/letsconnect:latest
-
-            # Stop and remove the old container if it exists
-            sudo docker stop letsconnect_container || true
-            sudo docker rm letsconnect_container || true
-
-            # Run the Docker container with environment variables
-            sudo docker compose up -d \         
+            # Restart app using compose (correct way)
+            sudo docker compose down
+            sudo docker compose up -d
           EOF
