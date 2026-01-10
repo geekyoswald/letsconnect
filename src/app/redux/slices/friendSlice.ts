@@ -13,6 +13,10 @@ const friendSlice = createSlice({
       state.friendId = action.payload.friendId; // Use friendId here
       state.friendName = action.payload.friendName; // Use friendName here
     },
+    resetFriend: (state) => {
+      state.friendId = 2;
+      state.friendName = "friend";
+    },
   },
 });
 
@@ -21,6 +25,6 @@ export interface friendState {
   friendName: string;
 }
 
-export const { updateFriend } = friendSlice.actions;
+export const { updateFriend, resetFriend } = friendSlice.actions;
 
 export default friendSlice.reducer;

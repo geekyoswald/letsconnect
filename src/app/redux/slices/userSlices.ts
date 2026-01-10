@@ -17,6 +17,10 @@ const userSlice = createSlice({
       state.userId = action.payload.id;
       state.username = action.payload.name;
     },
+    logout: (state) => {
+      state.userId = 0;
+      state.username = "dummy";
+    },
   },
 });
 
@@ -25,6 +29,6 @@ export interface userState {
   username: string;
 }
 
-export const { updateUser } = userSlice.actions;
+export const { updateUser, logout } = userSlice.actions;
 
 export default userSlice.reducer;
