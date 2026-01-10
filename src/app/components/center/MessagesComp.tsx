@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import SingleMessage from "./SingleMessage";
 import { createBrowserClient } from "@supabase/ssr";
 
@@ -20,14 +20,13 @@ const MessagesComp = () => {
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
 
- const supabase = createBrowserClient(
-    supabaseUrl!,
-    supabaseKey!,
+  const supabase = useMemo(
+    () =>
+      createBrowserClient(supabaseUrl!, supabaseKey!),
+    [supabaseUrl, supabaseKey]
   );
-  // const SUPABASE_URL = "NEXT_PUBLIC_SUPABASE_URL";
-  // const SUPABASE_ANON_KEY = "NEXT_PUBLIC_SUPABASE_ANON_KEY";
 
   const dispatch = useDispatch();
   const state = useSelector((state: rootState) => state);
@@ -69,7 +68,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
     return () => {
       supabase.removeChannel(subscription);
     };
-  }, [state.friend]);
+  }, [state.friend, state.user.userId, dispatch, supabase]);
   return (
     <div
       style={{ height: "640px", maxHeight: "640px" }}

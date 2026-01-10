@@ -19,10 +19,10 @@ const Page = () => {
       });
       console.log(resp.data);
       router.push("/signin");
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
       // Handle axios error response
-      if (e.response?.data?.error) {
+      if (axios.isAxiosError(e) && e.response?.data?.error) {
         setError(e.response.data.error);
       } else {
         setError("An error occurred. Please try again.");

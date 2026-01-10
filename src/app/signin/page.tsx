@@ -23,10 +23,10 @@ const Page = () => {
       localStorage.setItem("username", resp.data.user.username);
       localStorage.setItem("id", resp.data.user.id);
       router.push("/chat");
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
       // Handle axios error response
-      if (e.response?.data?.error) {
+      if (axios.isAxiosError(e) && e.response?.data?.error) {
         setError(e.response.data.error);
       } else {
         setError("An error occurred. Please try again.");

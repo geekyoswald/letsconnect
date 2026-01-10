@@ -6,9 +6,8 @@ import React, { useEffect, useState, useRef } from "react";
 
 import friend6 from "../../assets/pp2.png";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateFriend } from "@/app/redux/slices/friendSlice";
-import { rootState } from "@/app/redux/rootState";
 
 const Chats = () => {
   interface Friend {
@@ -16,7 +15,6 @@ const Chats = () => {
     username: string;
   }
   const dispatch = useDispatch();
-  const state = useSelector((state: rootState) => state);
   const hasSelectedRandomFriend = useRef(false);
 
   const [allFriends, setAllFriends] = useState<Friend[]>([]);
@@ -35,20 +33,13 @@ const Chats = () => {
           },
         });
         
-        const currentUserId = Number(localStorage.getItem("id"));
-        
-        // Filter out current user (extra safety check)
-        const filteredFriends = response.data.filter(
-          (friend: Friend) => friend.id !== currentUserId
-        );
-        
-        setAllFriends(filteredFriends);
-        console.log(filteredFriends);
+        setAllFriends(response.data);
+        console.log(response.data);
         
         // Select a random friend if friends list is not empty and we haven't selected one yet
-        if (filteredFriends.length > 0 && !hasSelectedRandomFriend.current) {
-          const randomIndex = Math.floor(Math.random() * filteredFriends.length);
-          const randomFriend = filteredFriends[randomIndex];
+        if (response.data.length > 0 && !hasSelectedRandomFriend.current) {
+          const randomIndex = Math.floor(Math.random() * response.data.length);
+          const randomFriend = response.data[randomIndex];
           dispatch(
             updateFriend({
               friendId: randomFriend.id,

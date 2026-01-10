@@ -10,14 +10,20 @@ export async function GET(req: NextRequest) {
   if (!token) {
     return NextResponse.json({ error: "Unauthorized due to missing token" });
   }
-  let decodedToken: any;
+  let decodedToken: jwt.JwtPayload | string;
   try {
     decodedToken = jwt.verify(token, JWT_SECRET);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Unauthorized due to invalid token" });
   }
   
-  const currentUserId = decodedToken.id;
+  const currentUserId = typeof decodedToken === "object" && "id" in decodedToken 
+    ? decodedToken.id as number 
+    : null;
+  
+  if (currentUserId === null) {
+    return NextResponse.json({ error: "Invalid token payload" });
+  }
   
   // Fetch all users except the current user
   const allUsers = await prisma.user.findMany({
