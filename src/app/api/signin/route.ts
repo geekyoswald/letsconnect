@@ -14,11 +14,11 @@ export async function POST(req: NextRequest) {
     },
   });
   if (!user) {
-    return NextResponse.json({ error: "No user found" });
+    return NextResponse.json({ error: "Invalid username or password" }, { status: 401 });
   }
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return NextResponse.json({ error: "Password Incorrect" });
+    return NextResponse.json({ error: "Invalid username or password" }, { status: 401 });
   }
 
   const token = jwt.sign({ id: user.id, name: user.username }, JWT_SECRET);

@@ -8,19 +8,34 @@ import { useRouter } from "next/navigation";
 const Page = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
   const handleOnCLick = async () => {
-    const resp = await axios.post("/api/signup", {
-      username,
-      password,
-    });
-    console.log(resp.data); // Here you can add the logic to handle the response from the server.
-    router.push("/signin");
+    setError(""); // Clear any previous errors
+    try {
+      const resp = await axios.post("/api/signup", {
+        username,
+        password,
+      });
+      console.log(resp.data);
+      router.push("/signin");
+    } catch (e: any) {
+      console.error(e);
+      // Handle axios error response
+      if (e.response?.data?.error) {
+        setError(e.response.data.error);
+      } else {
+        setError("An error occurred. Please try again.");
+      }
+    }
   };
   return (
     <div className="h-screen w-screen bg-slate-100  flex items-center justify-center">
       <div className="h-1/3 w-3/12 border rounded bg-white border-zinc-950 flex flex-col p-5 gap-10">
         <p className="text-4xl font-extrabold">Sign Up</p>
+        {error && (
+          <div className="text-red-500 text-sm font-medium">{error}</div>
+        )}
         <input
           className="w-3/4 border-b focus:outline-none"
           type="text"
@@ -30,7 +45,7 @@ const Page = () => {
         />
         <input
           className="w-3/4 border-b focus:outline-none"
-          type="text"
+          type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
