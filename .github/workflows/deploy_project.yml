@@ -41,7 +41,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # 6️⃣ Deploy on EC2 (Docker Compose)
+      # 6️⃣ Deploy on EC2 with Docker cleanup
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@ec2-13-50-239-137.eu-north-1.compute.amazonaws.com << 'EOF'
@@ -49,10 +49,17 @@ jobs:
 
             cd /home/ubuntu/letsconnect
 
-            # Pull latest image
+            echo "Stopping running containers..."
+            sudo docker compose down
+
+            echo "Cleaning up unused Docker resources..."
+            sudo docker system prune -af --volumes
+
+            echo "Pulling latest Docker images..."
             sudo docker compose pull
 
-            # Restart app using compose (correct way)
-            sudo docker compose down
+            echo "Starting containers..."
             sudo docker compose up -d
+
+            echo "Deployment completed successfully."
           EOF
